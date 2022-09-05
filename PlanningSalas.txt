@@ -1,0 +1,53 @@
+class PlanningSalas(models.Model):
+    _name = "planning.salas"
+    _description = "Salas planificadas"
+
+    @api.depends("planning_id", "place_id", "state")
+    def compute_partner_id(self):
+        if self.planning_id:
+            if self.planning_id.planograma_id:
+                if self.planning_id.planograma_id.partner_id:
+                    self.write({
+                        "partner_id": [(6, 0, self.planning_id.planograma_id.partner_id.ids)]
+                    })
+        else:
+            self.write({
+                "partner_id": [(6, 0, [])]
+            })
+
+    partner_id = fields.Many2many('res.partner', string="Clientes", compute="compute_partner_id",
+                                  store=False)
+
+    date_start = fields.Date('Date start', related="planning_id.date_start", store=True)
+    date_end = fields.Date('Date end', related="planning_id.date_end", store=True)
+    study_id = fields.Many2one('study', string="Estudio", related="planning_id.planograma_id.study_id", store=True)
+
+    planning_id = fields.Many2one('planning', string="Planning")
+    place_id = fields.Many2one('salas', string="Sala")
+    cadena = fields.Char(string="Cadena", related='place_id.cadena')
+    canal = fields.Char(string="Canal", related='place_id.canal')
+    address = fields.Char(string="Dirección", related='place_id.address')
+    comuna_id = fields.Many2one("comunas", related='place_id.comuna_id')
+
+    name = fields.Char("Consecutivo")
+    auditor_id = fields.Many2one('res.users', string="Auditor")
+    coordinator_id = fields.Many2one('res.users', string="Coordinador")
+    specifications = fields.Char(size=100, string="Especificaciones")
+    comment = fields.Char(size=100, string="Comentario")
+    planning_products_ids = fields.One2many('planning.product', 'planning_salas_id', string="Productos")
+    image = fields.Binary(string="Foto inicial")
+    id_quiz_1 = fields.Many2one('quiz', string="Id Quiz 1")
+    answer_quiz_1 = fields.Char("Respuesta 1")
+    id_quiz_2 = fields.Many2one('quiz', string="Id Quiz 2")
+    answer_quiz_2 = fields.Char("Respuesta 2")
+    id_quiz_3 = fields.Many2one('quiz', string="Id Quiz 3")
+    answer_quiz_3 = fields.Char("Respuesta 3")
+    mediciones_ids = fields.One2many('planning.product', 'planning_salas_id', string="Mediciones")
+    categories_ids = fields.Many2many('product.category')
+    state = fields.Selection([
+        ('prepared', 'Preparado'),
+        ('no_done', 'No realizado'),
+        ('doing', 'Haciendose'),
+        ('done', 'Realizado'),
+    ], string='Estado', help='Estado', default='prepared')
+    images_ids = fields.One2many('photo.planning.salas', 'planning_sala_id')

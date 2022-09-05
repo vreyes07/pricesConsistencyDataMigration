@@ -1,0 +1,24 @@
+class Planning(models.Model):
+    _name = "planning"
+    _description = "Planificacion"
+
+    def copy(self, default=None):
+        self.ensure_one()
+
+        return super(Planning, self).copy(default=default)
+
+    name = fields.Char(string="Consecutivo")
+    study_id = fields.Many2one('study', string="Estudio", related="planograma_id.study_id", store=True)
+    channel = fields.Char(string="Canal")
+    planograma_id = fields.Many2one("planograma", string="Planograma")
+    date_start = fields.Date('Date start')
+    date_end = fields.Date('Date end')
+    description = fields.Char(size=100, string="Descripción")
+    user_id = fields.Many2one('res.users', string="Usuario")
+    planning_salas_ids = fields.One2many('planning.salas', 'planning_id', string="Salas planificadas", copy=True)
+    state = fields.Selection([
+        ('ready', 'Listo'),
+        ('doing', 'En proceso'),
+        ('no_done', 'Cancelado'),
+        ('done', 'Hecho'),
+    ], string='Estado', help='Estados de la planificacion', default='ready')

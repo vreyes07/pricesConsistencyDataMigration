@@ -1,0 +1,10 @@
+from winsound import SND_ALIAS
+
+
+1. Crear planograma con todas las salas y productos incluidos. -- OK
+2. Crear planificación que herede de ese planograma.
+#Pasos intermedios
+#Migrar salas
+#Migrar Comunas -- OK
+#Migrar Cadenas(Retailers)
+#Migrar Productos

@@ -1,0 +1,36 @@
+class Planograma(models.Model):
+    _name = "planograma"
+    _description = "Planograma"
+    
+    name = fields.Char("Consecutivo")
+    date_start = fields.Date('Date start')
+    date_end = fields.Date('Date end')
+    partner_id = fields.Many2many('res.partner', string="Clientes")
+    study_id = fields.Many2one('study', string="Study")
+    user_id = fields.Many2one('res.users', string="Usuario")
+    description = fields.Char(size=100, string="Descripción")
+    planograma_salas_ids = fields.Many2many('planograma.salas')
+    salas_planograma_ids = fields.One2many('salas.planograma', 'planograma_id', string='Salas del planograma',
+                                           copy=True)
+    variables_estudios_ids = fields.One2many('variables.studies', 'planograma_id', string='Variables de estudio',
+                                             copy=True)
+    planning_id = fields.Many2one("planning", string="Planificacion asociada")
+    selection_vals_domain = fields.Char(
+        compute="_compute_selection_vals_domain",
+        readonly=True,
+        store=False,
+    )
+    study_id_naturaleza = fields.Selection(
+        [('0', 'Productos'),
+         ('1', 'Muebles sin productos'),
+         ('2', 'Muebles con productos'),
+         ('3', 'Salas')],
+        string='Naturaleza del estudio', related="study_id.naturaleza", store=True)
+    study_id_type = fields.Selection(
+        [('2', 'Price'),
+         ('3', 'Facing'),
+         ('1', 'OSA'),
+         ('4', 'Equipos de frio'),
+         ('5', 'Exhibitions')],
+        string='Tipo de estudio', related="study_id.type", store=True)
+    scope_type = fields.Char(string="Alcance", )

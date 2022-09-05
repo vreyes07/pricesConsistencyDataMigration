@@ -1,0 +1,53 @@
+TABLA DE MEDICIONES
+class PlanningProducts(models.Model):
+    _name = "planning.product"
+    _description = "Productos planificados"
+
+    @api.depends("planning_salas_id")
+    def _compute_studio(self):
+        for medition in self:
+            if medition:
+                if medition.planning_salas_id is not None:
+                    if medition.planning_salas_id.planning_id is not None:
+                        if medition.planning_salas_id.planning_id.planograma_id is not None:
+                            if medition.planning_salas_id.planning_id.planograma_id.study_id is not None:
+                                medition.tipo_estudio = medition.planning_salas_id.planning_id.planograma_id.study_id.name or ''
+
+    tipo_estudio = fields.Char(compute='_compute_studio', string="Tipo de estudio", store=True)
+    name = fields.Char("Visita", related='planning_salas_id.name')
+    auditor = fields.Many2one('res.users', string="Auditor")
+    planning_salas_id = fields.Many2one('planning.salas', string="Sala planificada")
+    product_id = fields.Many2one('product.product', string="Producto")
+    product_categ_id = fields.Many2one("product.category", related="product_id.categ_id")
+    ean = fields.Char(related="product_id.default_code")
+    product_ids = fields.Many2many('product.product')
+    variable_id = fields.Many2one('variables', string="Variable")
+    variable_ids = fields.Many2many('variables', string="Variables")
+    valor_por_defecto = fields.Char("Valor por defecto")
+    validation_perc = fields.Many2one('validacion.variables', string="Regla de validación",
+                                      help="Este campo se usará para validar una variable respecto a otra.")
+    disponibilidad = fields.Char("Disponibilidad")
+    respuesta = fields.Char("Respuesta")
+    comment = fields.Char("Comentario")
+    posicion_x = fields.Char("Posicion X del producto")
+    posicion_y = fields.Char("Posicion Y del producto")
+    date_start = fields.Datetime(string="Momento medicion")
+    planogramado = fields.Boolean(string="Planogramado ó añadido", default=True)
+    xN1 = fields.Integer(string="xN1")
+    xN2 = fields.Integer(string="xN2")
+    is_audited = fields.Boolean(string="Auditada?", default=False)
+    estado = fields.Selection(
+        [('quebrado', 'Quebrado'),
+         ('cautivo', 'Cautivo'),
+         ('erroneo', 'Erróneo'),
+         ('present', 'Presente'),
+         ('por_evaluar', 'Por evaluar'),
+         ('no_aplica', 'No Aplica')],
+        string='Disponibilidad', default='por_evaluar')
+    product_padre_id = fields.Many2one('product.product', string="Producto padre")
+    images_ids = fields.One2many('photo.planning.product', 'planning_product_id')
+
+    detalle1_respuesta = fields.Char("Detalle 1")
+    detalle2_respuesta = fields.Char("Detalle 2")
+    detalle3_respuesta = fields.Char("Detalle 3")
+    detalle4_respuesta = fields.Char("Detalle 4")
