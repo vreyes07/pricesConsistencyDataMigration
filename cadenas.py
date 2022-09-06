@@ -25,7 +25,7 @@ INSERT INTO public.comunas
 VALUES('', 0, 0, '', 0, '');
 '''
 
-def comunas():
+def cadenas():
 
     # Instantiate database object:
     miSqlConx = sqlServerCnx()
@@ -36,11 +36,11 @@ def comunas():
     cursorpg = postgresConx.cursor()
 
     # Execute a query and print results
-    cursor.execute('''SELECT c.COMUNA_NOMBRE, 2 as createuid, 2 as writeuid from COMUNA c inner join PROVINCIA p on c.COMUNA_PROVINCIA_ID = p.PROVINCIA_ID;''')
+    cursor.execute('''SELECT TOP 10 c.DESCRIPCION FROM CADENA c;;''')
 
     for i in cursor:
-        cursorpg.execute('''INSERT INTO public.comunas ("name", create_uid, write_uid)
-                            VALUES(%s, %s, %s)''', (str(i[0]), int(i[1]), int(i[2])))
+        cursorpg.execute('''INSERT INTO public.cadenas_supi(name, create_uid, write_uid)
+	                        VALUES (%s, %s, %s);''', (str(i[0]), int(2), int(2)))
         postgresConx.commit()
 
     postgresConx.close()      
