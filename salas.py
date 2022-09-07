@@ -42,11 +42,13 @@ def salas():
     cursorpg = postgresConx.cursor()
 
     # Execute a query and print results
-    cursor.execute('''SELECT s.FOLIOCADEM, s.ID_COMUNA, s.DIRECCION, s.GPS_LATITUD, s.GPS_LONGITUD, s.ID_CADENA, s.ID_COMUNA from SALA s;''')
+    cursor.execute('''SELECT c.DESCRIPCION, s.DIRECCION, s.FOLIOCADEM, s.ID_COMUNA, s.ID_CADENA, s.ID_CANAL, s.GPS_LATITUD, s. GPS_LATITUD, s.GPS_LONGITUD 
+                      FROM SALA s 
+                      INNER JOIN CADENA c ON s.ID_CADENA = c.ID_CADENA;''')
 
     for i in cursor:
-        cursorpg.execute('''INSERT INTO public.comunas ("name", state_id, create_uid, write_uid,)
-                            VALUES(%s, %s, %s, %s, %s, %s)''', (int(i[0]), int(i[1]), int(i[2])))
+        cursorpg.execute('''INSERT INTO public.salas(name, address, folio, comuna_id, cadena, canal, lat, "long", create_uid, write_uid)
+	                          VALUES (%s, %s, %s, %s, %s, %s, %s, %d, %d);''', (i[0], i[1], i[2], i[3], i[4], i[5], float(i[6]), float(i[7]), 2, 2))
         postgresConx.commit()
 
     postgresConx.close()      

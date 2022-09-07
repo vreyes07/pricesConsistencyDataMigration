@@ -5,7 +5,7 @@ def productos():
     
     # Create final xls to contain all the data
     wb = Workbook()
-    wb.create_sheet("Items")
+    wb.create_sheet("Items3")
     sheet = wb.active
 
     # Instantiate database object:
@@ -15,15 +15,17 @@ def productos():
     cursor = miSqlConx.cursor()
 
     # Execute a query and print results
-    cursor.execute('''SELECT TOP 30 i.EAN, i.ID_CATEGORIA, app.ID_CATEGORIA as AppCategoria, i.DESCRIPCION, i.MARCA, i.FABRICANTE, i.VOLUMEN, i.ALTO, i.LARGO, i.ANCHO, i.PESO, 
+    cursor.execute('''SELECT i.EAN, i.ID_CATEGORIA, app.ID_CATEGORIA as AppCategoria, i.DESCRIPCION, i.MARCA, i.FABRICANTE, i.VOLUMEN, i.ALTO, i.LARGO, i.ANCHO, i.PESO,
                       i.ID_CLIENTE, c.NOMBRECLIENTE
                       FROM ITEM i 
                       INNER JOIN CLIENTE c on i.ID_CLIENTE = c.ID_CLIENTE
-                      INNER JOIN ALARMA_PRODUCTO_POSICION app on i.ID_CATEGORIA = app.ID_CATEGORIA;''')
+                      RIGHT JOIN ALARMA_PRODUCTO_POSICION app on i.ID_CATEGORIA = app.ID_CATEGORIA
+                      ORDER BY I.EAN
+                      OFFSET 150000 ROWS 
+                      FETCH NEXT 15000 ROWS ONLY;''')
     
     # Retrieve Columns header names
     columns = cursor.description
-    print(type(columns))
     result = [i[0] for i in cursor.description]
     sheet.append(result)
 

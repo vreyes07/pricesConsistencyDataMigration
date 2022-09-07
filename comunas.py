@@ -36,11 +36,11 @@ def comunas():
     cursorpg = postgresConx.cursor()
 
     # Execute a query and print results
-    cursor.execute('''SELECT c.COMUNA_NOMBRE, 2 as createuid, 2 as writeuid from COMUNA c inner join PROVINCIA p on c.COMUNA_PROVINCIA_ID = p.PROVINCIA_ID;''')
+    cursor.execute('''SELECT c.COMUNA_ID, c.COMUNA_NOMBRE, 2 as createuid, 2 as writeuid from COMUNA c inner join PROVINCIA p on c.COMUNA_PROVINCIA_ID = p.PROVINCIA_ID;''')
 
     for i in cursor:
-        cursorpg.execute('''INSERT INTO public.comunas ("name", create_uid, write_uid)
-                            VALUES(%s, %s, %s)''', (str(i[0]), int(i[1]), int(i[2])))
+        cursorpg.execute('''INSERT INTO public.comunas (id, "name", create_uid, write_uid)
+                            VALUES(%s, %s, %s, %s)''', (i[0], i[1], i[2], i[3]))
         postgresConx.commit()
 
     postgresConx.close()      
