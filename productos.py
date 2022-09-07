@@ -5,7 +5,7 @@ def productos():
     
     # Create final xls to contain all the data
     wb = Workbook()
-    wb.create_sheet("Items3")
+    wb.create_sheet("Items")
     sheet = wb.active
 
     # Instantiate database object:
@@ -33,5 +33,5 @@ def productos():
        sheet.append(tuple(i))
 
     wb.save('Items.xlsx')
-
+ 
     miSqlConx.close()
