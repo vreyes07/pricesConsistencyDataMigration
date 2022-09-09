@@ -8,8 +8,8 @@ from salas import *
 #planograma102()
 #comunas()
 #cadenas()
-productos()
-#salas()
+#productos()
+salas()
 
 
 

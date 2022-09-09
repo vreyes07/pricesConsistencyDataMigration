@@ -1,12 +1,9 @@
-from winsound import SND_ALIAS
-
-
 1. Crear planograma con todas las salas y productos incluidos. -- Done
-2. Crear planificación que herede de ese planograma.
-3. Migrar salas -- WAITING
+2. Crear planificación que herede de ese planograma.  -- IN PROGRESS 
+3. Migrar salas -- DONE
 4. Migrar Comunas -- Done
 5. Migrar Cadenas(Retailers) -- Done
-6. Migrar Productos -- Partially done. Expecting reviews
+6. Migrar Productos -- Creatte several xlsx doc to import products 
 
 Observations:
 1. En el caso de cadenas cargamos igual el valor de la columna "Activo"? Solo tiene el valor:"S".
