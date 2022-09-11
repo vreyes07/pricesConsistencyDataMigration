@@ -3,7 +3,8 @@
 3. Migrar salas -- DONE
 4. Migrar Comunas -- Done
 5. Migrar Cadenas(Retailers) -- Done
-6. Migrar Productos -- Creatte several xlsx doc to import products 
+6. Migrar Productos -- Create several xlsx doc to import products
+7. Migrar categorías -- Done
 
 Observations:
 1. En el caso de cadenas cargamos igual el valor de la columna "Activo"? Solo tiene el valor:"S".
