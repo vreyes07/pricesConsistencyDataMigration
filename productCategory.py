@@ -15,19 +15,32 @@ def productCategory():
 
     # Store category, parent_id, description in a dictionary. The format is {'n(id_categoria)': int, 'a(categoria_padre)': int, 'm(descripcion)': str}
     catrelation = {i : dict(zip(f'name{i}', row)) for i, row in enumerate(cursor.fetchall()) if row[1] != None}
-
     #for i in catrelation.items():
     #    print(f'{i[1].get("n")}, {i[1]["a"]}')
 
     # Insert products categories with out parent_id
     cursor.execute('''SELECT c.ID_CATEGORIA, c.categoria_padre, c.DESCRIPCION from CATEGORIA c;''')
+
+    #for i in cursor:
+    #    cursorpg.execute('''INSERT INTO public.product_category(name, complete_name, parent_path, create_uid, write_uid)
+	#                        VALUES (%s, %s, %s, %s, %s);''', (i[0], i[0], str(f'{i[0]}/'), 2, 2))
+    #    postgresConx.commit()
+
+    #postgresConx.close()    
+
+    # Update product category name into the form code-description
     for i in cursor:
-        cursorpg.execute('''INSERT INTO public.product_category(name, complete_name, parent_path, create_uid, write_uid)
-	                        VALUES (%s, %s, %s, %s, %s);''', (i[0], i[0], str(f'{i[0]}/'), 2, 2))
+        #Creating new format for field
+        newName = "{}-{}".format(str(i[0]), str(i[2]))
+        print(newName)
+        print(f'Updating complete_name field for product category: {i[0]}')
+        cursorpg.execute('''UPDATE product_category SET complete_name=%s WHERE name=%s;''', (newName, str(i[0])))
+        cursorpg.execute('''UPDATE product_category SET name=%s WHERE name=%s;''', (newName, str(i[0])))
+        #cursorpg.execute('''UPDATE product_category SET name=%s WHERE name=%s;''', (str(i[0]), newName))
         postgresConx.commit()
 
-    postgresConx.close()      
 
+    exit()
     # Update rows to specify new parent_id values
     postgresConxII = postgresServer()
     cursorpgUpdate = postgresConxII.cursor()

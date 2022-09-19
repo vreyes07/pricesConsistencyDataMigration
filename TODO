@@ -1,11 +1,16 @@
-1. Crear planograma con todas las salas y productos incluidos. -- Done
+1. Crear planograma con todas las salas y productos incluidos. -- IN PROGRESS
 2. Crear planificación que herede de ese planograma.  -- IN PROGRESS 
 3. Migrar salas -- DONE
 4. Migrar Comunas -- Done
 5. Migrar Cadenas(Retailers) -- Done
 6. Migrar Productos -- Create several xlsx doc to import products
 7. Migrar categorías -- Done
+8. Migrar visitas -- WAITING
 
 Observations:
-1. En el caso de cadenas cargamos igual el valor de la columna "Activo"? Solo tiene el valor:"S".
-2. Campo categoría en tabla items. ¿Es importante? En teoría sale de la relación con ¨ALARMA_PRODUCTO_POSICION¨.
+1. En el caso de cadenas cargamos igual el valor de la columna "Activo"? Solo tiene el valor:"S". -- NO
+2. Campo categoría en tabla items. ¿Es importante? En teoría sale de la relación con ¨ALARMA_PRODUCTO_POSICION¨. -- NO
+3. Los ids de los auditores no coinciden en las bbdd nuevas y viejas. Esto afecta a las visitas.
+4. Las visitas tienen relación con las SP(salas planificadas?) Estudios(study_id) los campos no son obligatorios en postgresql y no aparecen en SQL Server. ¿Qué hacemos?
+5. El tipo del campo estado en ambas bbdd no coincide, en SQL Server es un id puesto a mano(esto es: sin relación alguna y además no veo una tabla ¨ESTADO¨). En postgres es un ¨str¨
+

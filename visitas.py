@@ -25,7 +25,7 @@ INSERT INTO public.comunas
 VALUES('', 0, 0, '', 0, '');
 '''
 
-def comunas():
+def visitas():
 
     # Instantiate database object:
     miSqlConx = sqlServerCnx()
@@ -36,13 +36,15 @@ def comunas():
     cursorpg = postgresConx.cursor()
 
     # Execute a query and print results
-    cursor.execute('''SELECT c.COMUNA_ID, c.COMUNA_NOMBRE, 2 as createuid, 2 as writeuid from COMUNA c inner join PROVINCIA p on c.COMUNA_PROVINCIA_ID = p.PROVINCIA_ID;''')
+    cursor.execute('''SELECT v.ID_VISITA, v.ID_ESTUDIOSALA, v.ID_AUDITOR, v.ESTADO, v.HORAINICIO, v.HORAFIN from VISITA v;''')
 
     for i in cursor:
-        print(f'Inserting comune {i[0]}')
-        cursorpg.execute('''INSERT INTO public.comunas (id, "name", create_uid, write_uid)
-                            VALUES(%s, %s, %s, %s)''', (i[0], i[1], i[2], i[3]))
-        postgresConx.commit()
+        print(i)
+        cursorpg.execute('''INSERT INTO public.planning_salas(planning_id, place_id, auditor_id, state, create_uid, write_uid, date_start, date_end)
+	                          VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''', (i[0], i[1], i[2], str(i[3]), 2, 2, i[4], i[5]))  
+        #cursorpg.execute('''INSERT INTO public.comunas (id, "name", create_uid, write_uid)
+        #                    VALUES(%s, %s, %s, %s)''', (i[0], i[1], i[2], i[3]))
+        #postgresConx.commit()
 
     postgresConx.close()      
     miSqlConx.close()

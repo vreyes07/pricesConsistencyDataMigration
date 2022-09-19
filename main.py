@@ -5,6 +5,9 @@ from cadenas import *
 from productos import *
 from salas import *
 from productCategory import *
+from visitas import *
+from geosalas import *
+
 
 #planograma102()
 #comunas()
@@ -12,8 +15,8 @@ from productCategory import *
 #productos()
 #salas()
 productCategory()
-
-
+#visitas()
+#geosalas()
 
 
 
