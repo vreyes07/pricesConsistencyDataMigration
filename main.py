@@ -7,6 +7,7 @@ from salas import *
 from productCategory import *
 from visitas import *
 from geosalas import *
+from regiones import *
 
 
 #planograma102()
@@ -17,6 +18,7 @@ from geosalas import *
 productCategory()
 #visitas()
 #geosalas()
+#regiones()
 
 
 
